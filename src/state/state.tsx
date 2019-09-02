@@ -1,5 +1,5 @@
-import { PostState } from "./posts/state";
+import { CharacterState } from "./characters/state";
 
 export type AppState = {
-  posts: PostState;
+  characters: CharacterState;
 }

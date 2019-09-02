@@ -1,8 +1,12 @@
 import { StringLiteral } from "@babel/types";
 
-export interface Post {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
+export interface Character {
+  name: string,
+  height: string,
+  mass: string,
+  hairColor: string,
+  skinColor: string,
+  eyeColor: string,
+  birthYear: string,
+  gender: string,
 }

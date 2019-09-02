@@ -15,6 +15,7 @@
     "react-scripts": "3.1.1",
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.5",
+    "react-window-infinite-loader": "^1.0.3",
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.1",
+    "@types/react-window-infinite-loader": "^1.0.1",
     "@types/reactstrap": "^8.0.4",
     "@types/redux-devtools-extension": "^2.13.2",
     "@types/styled-components": "^4.1.18",

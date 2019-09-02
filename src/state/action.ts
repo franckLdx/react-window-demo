@@ -1,12 +1,12 @@
-import { PostsActions } from "./posts/actions";
-import { loadPosts } from '../service';
+import { CharactersActions } from "./characters/actions";
+import { loadCharacters, LoadCharacters } from '../service';
 
-export type AppActions = PostsActions;
+export type AppActions = CharactersActions;
 
 export interface ThunkExtraArgs {
-  loadPosts: () => Promise<any>
+  loadCharacters: LoadCharacters
 }
 
 export const thunkExtraArg: ThunkExtraArgs = {
-  loadPosts
+  loadCharacters
 };
