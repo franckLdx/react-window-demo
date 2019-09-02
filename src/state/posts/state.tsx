@@ -1,9 +1,9 @@
 import { Post } from "../../types";
 
-export type LoadState = 'initial' | 'loading' | 'loaded' | 'error';
+export type LoadStatus = 'initial' | 'loading' | 'loaded' | 'error';
 
 export interface PostState {
-  loadStatus: LoadState,
+  loadStatus: LoadStatus,
   posts: Post[],
 }
 

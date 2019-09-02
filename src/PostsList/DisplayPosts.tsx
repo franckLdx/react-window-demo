@@ -1,48 +1,28 @@
-import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux'
-import { AppState } from '../state';
-import { ListGroupItem, ListGroupItemHeading, ListGroupItemText, ListGroup } from 'reactstrap';
-import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import AutoSizer from "react-virtualized-auto-sizer";
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
+import { Card } from 'semantic-ui-react'
+import { useSelector } from 'react-redux';
+import { Post } from '../types';
+import { AppState } from '../state';
 
 const MyContainer = styled.div`
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
 `;
 
 export const DisplayPosts: React.FC = () => {
-  const posts = useSelector((state: AppState) => state.posts.posts)
-
-  const rowRender = useCallback(({ index, style }: ListChildComponentProps) => {
-    console.log(`Render ${index}/${posts.length}`)
-    const { title, body } = posts[index];
-    return (
-      <ListGroupItem style={style} >
-        <ListGroupItemHeading>{title}</ListGroupItemHeading>
-        <ListGroupItemText>{body}</ListGroupItemText>
-      </ListGroupItem>
-    )
-  }, [posts]);
-
+  const posts = useSelector<AppState, Post[]>(state => state.posts.posts);
+  const items = useMemo(
+    () => posts.map(({ title, body }) => ({
+      header: title,
+      description: body
+    })),
+    [posts]
+  );
   return (
     <MyContainer>
-      <AutoSizer>
-        {({ height, width }) => {
-          return (
-            <ListGroup>
-              <FixedSizeList
-                itemCount={posts.length}
-                itemSize={150}
-                height={height}
-                width={width}
-              >
-                {rowRender}
-              </FixedSizeList>
-            </ListGroup>
-          )
-        }}
-      </AutoSizer>
+      <Card.Group centered items={items} />
     </MyContainer>
   )
 }
