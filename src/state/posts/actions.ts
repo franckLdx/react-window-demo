@@ -2,6 +2,7 @@ import { ActionCreator } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { AppState } from "../state";
 import { AppActions, ThunkExtraArgs } from "../action";
+import { Post } from "../../types";
 
 type AppThunkDispatch = ThunkDispatch<AppState, ThunkExtraArgs, AppActions>;
 
@@ -27,9 +28,9 @@ export const LoadingPosts = (): LoadingPosts => ({
 
 export interface LoadingPostsSuccess {
   type: 'LOADING_POST_SUCCESSFULL',
-  posts: any
+  posts: Post[]
 }
-export const loadingPostSuccessfull: ActionCreator<LoadingPostsSuccess> = (posts: any) => ({
+export const loadingPostSuccessfull: ActionCreator<LoadingPostsSuccess> = (posts: Post[]) => ({
   type: 'LOADING_POST_SUCCESSFULL',
   posts,
 });
