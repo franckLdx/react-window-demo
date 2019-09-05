@@ -1,5 +1,5 @@
 import { PostsActions } from "./posts/actions";
-import { loadPosts } from '../service';
+import { loadPosts } from '../services';
 import { Post } from "../types";
 
 export type AppActions = PostsActions;

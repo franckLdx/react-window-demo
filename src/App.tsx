@@ -1,11 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
-import { PostsList } from './PostsList';
+import { Main } from './composants';
 
 const App: React.FC = () => <>
   <Provider store={store}>
-    <PostsList />
+    <Main />
   </Provider></>;
 
 export default App;
