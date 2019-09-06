@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { AppState, loadPosts } from '../../state';
-import { DisplayPosts } from './DisplayPosts';
+import { loadPosts } from '../../../state';
 import { Dimmer, Loader, Segment, Image } from 'semantic-ui-react';
-import { RouteComponentProps } from 'react-router';
+import { ListItem } from './ListItem';
+import { getPostLoadStatus } from '../../../state/selectors';
 
-
-export const PostsList: React.FC<RouteComponentProps<any>> = (props) => {
+export const PostsList: React.FC = () => {
   const dispatch = useDispatch();
-  const loadStatus = useSelector((state: AppState) => state.posts.loadStatus)
+  const loadStatus = useSelector(getPostLoadStatus)
   useEffect(() => { dispatch(loadPosts()) }, [dispatch]);
 
   switch (loadStatus) {
@@ -16,9 +15,9 @@ export const PostsList: React.FC<RouteComponentProps<any>> = (props) => {
     case 'loading':
       return <Loading />
     case 'error':
-      return <>Oups, sorry something went wrong.<br />Better luck next time</>
+      return <Error />
     default:
-      return <DisplayPosts {...props} />
+      return <ListItem />
   }
 }
 
@@ -30,3 +29,8 @@ const Loading: React.FC = () => (
     <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
   </Segment>
 )
+
+const Error: React.FC = () =>
+  <>
+    Oups, sorry something went wrong.<br />Better luck next time
+  </>;
