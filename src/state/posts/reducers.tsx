@@ -1,5 +1,5 @@
 import { PostState, initialPostState } from "./state";
-import { AppActions } from "../action";
+import { AppActions } from "../actions";
 
 export const posts = (state: PostState = initialPostState, action: AppActions): PostState => {
   switch (action.type) {

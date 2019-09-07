@@ -6,3 +6,11 @@ export interface Post {
   title: string;
   body: string;
 }
+
+export interface PostComment {
+  id: number;
+  postId: number;
+  name: string;
+  body: string
+  email: string;
+}

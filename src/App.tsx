@@ -8,9 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 const MyContainer = styled.div`
   width: 100%;
   height: 100%;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
+  padding: 15px;
 `;
 
 const App: React.FC = () => <>

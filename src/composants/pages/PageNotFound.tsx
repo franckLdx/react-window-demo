@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
 import { RouteComponentProps, withRouter } from "react-router";
-import { HomePageButton } from "../HomePageButton";
+import { HomePageButton } from "../utils/HomePageButton";
 
 const RawPageNotFound: React.FC<RouteComponentProps<any>> = ({ location }) => (
   <>

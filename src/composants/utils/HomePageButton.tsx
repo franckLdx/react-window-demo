@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Route_Home } from './routes';
 import { Button, Icon } from 'semantic-ui-react';
 
 const RawHomePageButton: React.FC<RouteComponentProps<any>> = ({ history }) => {
   const onClick = useCallback(
-    () => history.push(Route_Home),
+    () => history.push('/'),
     [history]
   );
   return (

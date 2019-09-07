@@ -1,13 +1,20 @@
 import { ActionCreator } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { AppState } from "../state";
-import { AppActions, ThunkExtraArgs } from "../action";
+import { AppActions, ThunkExtraArgs } from "../actions";
 import { Post } from "../../types";
+import { loadCommentsOfPost } from "../../services";
+import { loadingCommentsSuccessfull } from "../comments/actions";
+import { getPostLoadStatus } from "./selectors";
 
 type AppThunkDispatch = ThunkDispatch<AppState, ThunkExtraArgs, AppActions>;
 
 export const loadPosts = () => {
-  return async (dispatch: AppThunkDispatch, _state: AppState, { loadPosts }: ThunkExtraArgs) => {
+  return async (dispatch: AppThunkDispatch, getState: () => AppState, { loadPosts }: ThunkExtraArgs) => {
+    const state = getState();
+    if (getPostLoadStatus(state) === 'loaded') {
+      return;
+    }
     dispatch(LoadingPosts());
     try {
       const response = await loadPosts();
@@ -16,6 +23,14 @@ export const loadPosts = () => {
       console.error(error);
       dispatch(loadingPostsError());
     }
+  }
+}
+
+export const loadPost = (postId: number) => {
+  return async (dispatch: AppThunkDispatch) => {
+    dispatch(loadPosts());
+    const response = await loadCommentsOfPost(postId);
+    dispatch(loadingCommentsSuccessfull(response));
   }
 }
 
@@ -43,5 +58,3 @@ export const loadingPostsError: ActionCreator<LoadingPostsError> = () => ({
 });
 
 export type PostsActions = LoadingPostsSuccess | LoadingPosts | LoadingPostsError;
-
-export type LoadStatus = 'initial' | 'loading' | 'loaded' | 'failed';
