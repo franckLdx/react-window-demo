@@ -1,8 +1,9 @@
 import { ActionCreator } from "redux";
 import { AppState } from "../state";
-import { ThunkExtraArgs, AppThunkDispatch } from "../actions";
+import { AppThunkDispatch } from "../actions";
 import { Post } from "../../types";
 import { getPostLoadStatus } from "./selectors";
+import { ThunkExtraArgs } from "../thunks";
 
 export const loadPosts = () => {
   return async (dispatch: AppThunkDispatch, getState: () => AppState, { loadPosts }: ThunkExtraArgs) => {

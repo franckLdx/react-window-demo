@@ -1,7 +1,8 @@
 import { ActionCreator } from "redux";
 import { PostComment } from "../../types";
 import { AppState } from "../state";
-import { ThunkExtraArgs, AppThunkDispatch, loadPosts } from "../actions";
+import { AppThunkDispatch, loadPosts } from "../actions";
+import { ThunkExtraArgs } from "../thunks";
 
 export const loadCommentsOfPost = (postId: number) => {
   return async (dispatch: AppThunkDispatch, getState: () => AppState, { loadCommentsOfPost }: ThunkExtraArgs) => {
