@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { Card } from 'semantic-ui-react'
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { getPosts } from '../../../state';
 import { CardItem } from '../../utils/CardItem';
+import { Card } from 'semantic-ui-react';
 
 const RawListItem: React.FC<RouteComponentProps<any>> = (routeProps) => {
   const posts = useSelector(getPosts);

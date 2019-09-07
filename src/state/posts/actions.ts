@@ -1,13 +1,8 @@
 import { ActionCreator } from "redux";
-import { ThunkDispatch } from "redux-thunk";
 import { AppState } from "../state";
-import { AppActions, ThunkExtraArgs } from "../actions";
+import { ThunkExtraArgs, AppThunkDispatch } from "../actions";
 import { Post } from "../../types";
-import { loadCommentsOfPost } from "../../services";
-import { loadingCommentsSuccessfull } from "../comments/actions";
 import { getPostLoadStatus } from "./selectors";
-
-type AppThunkDispatch = ThunkDispatch<AppState, ThunkExtraArgs, AppActions>;
 
 export const loadPosts = () => {
   return async (dispatch: AppThunkDispatch, getState: () => AppState, { loadPosts }: ThunkExtraArgs) => {
@@ -23,14 +18,6 @@ export const loadPosts = () => {
       console.error(error);
       dispatch(loadingPostsError());
     }
-  }
-}
-
-export const loadPost = (postId: number) => {
-  return async (dispatch: AppThunkDispatch) => {
-    dispatch(loadPosts());
-    const response = await loadCommentsOfPost(postId);
-    dispatch(loadingCommentsSuccessfull(response));
   }
 }
 
