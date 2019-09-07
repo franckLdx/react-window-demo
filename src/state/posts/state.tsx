@@ -1,12 +1,6 @@
 import { Post } from "../../types";
-import { LoadStatus } from "../utils";
 
-export interface PostState {
-  loadStatus: LoadStatus,
-  posts: Post[],
-}
+export type Posts = Post[];
 
-export const initialPostState: PostState = {
-  loadStatus: 'initial',
-  posts: []
-}
+export const initialPostState: Posts = []
+

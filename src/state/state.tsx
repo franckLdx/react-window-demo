@@ -1,7 +1,9 @@
-import { PostState } from "./posts/state";
-import { CommentState } from "./comments/state";
+import { Posts } from "./posts/state";
+import { Comments } from "./comments/state";
+import { PostsState } from "./postsState/state";
 
 export type AppState = {
-  posts: PostState;
-  comments: CommentState;
+  posts: Posts;
+  comments: Comments;
+  postsState: PostsState
 }

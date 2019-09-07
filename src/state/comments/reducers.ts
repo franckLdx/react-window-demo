@@ -1,14 +1,10 @@
-import { CommentState, initialCommentState } from "./state";
+import { initialComments, Comments } from "./state";
 import { AppActions } from "../actions";
 
-export const comments = (state: CommentState = initialCommentState, action: AppActions): CommentState => {
+export const comments = (state: Comments = initialComments, action: AppActions): Comments => {
   switch (action.type) {
     case 'LOADING_COMMENTS_SUCCESSFULL':
-      return {
-        ...state,
-        comments: [...state.comments, ...action.comments],
-        loadStatus: 'loaded'
-      }
+      return [...state, ...action.comments];
     default:
       return state;
   }

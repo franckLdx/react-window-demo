@@ -2,13 +2,13 @@ import { ActionCreator } from "redux";
 import { AppState } from "../state";
 import { AppThunkDispatch } from "../actions";
 import { Post } from "../../types";
-import { getPostLoadStatus } from "./selectors";
 import { ThunkExtraArgs } from "../thunks";
+import { getPostsLoadStatus } from "../postsState/selectors";
 
 export const loadPosts = () => {
   return async (dispatch: AppThunkDispatch, getState: () => AppState, { loadPosts }: ThunkExtraArgs) => {
     const state = getState();
-    if (getPostLoadStatus(state) === 'loaded') {
+    if (getPostsLoadStatus(state) === 'loaded') {
       return;
     }
     dispatch(LoadingPosts());

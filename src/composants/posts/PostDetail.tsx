@@ -2,11 +2,12 @@ import React, { useEffect, useMemo } from "react";
 import { Redirect } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { HomePageButton } from "../utils/HomePageButton";
-import { getPost, AppState, getCommentsOfPost, loadPosts, getPostLoadStatus, loadCommentsOfPost } from "../../state";
+import { getPost, AppState, getCommentsOfPost, loadPosts, loadCommentsOfPost } from "../../state";
 import { Post } from "../../types";
 import { Header, Card, Divider } from "semantic-ui-react";
 import { CardItem } from "../utils/CardItem";
 import { Loading } from "../utils/Loading";
+import { getPostsLoadStatus } from "../../state/postsState/selectors";
 
 interface PostDetailProps {
   postId: number;
@@ -15,7 +16,7 @@ interface PostDetailProps {
 export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   const dispatch = useDispatch();
   useEffect(() => { dispatch(loadPosts()) }, [dispatch]);
-  const loadStatus = useSelector(getPostLoadStatus)
+  const loadStatus = useSelector(getPostsLoadStatus)
   const post = useSelector((state: AppState) => getPost(state, postId));
 
   switch (loadStatus) {

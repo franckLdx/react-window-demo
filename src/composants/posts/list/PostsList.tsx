@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { ListItem } from './ListItem';
-import { getPostLoadStatus, loadPosts } from '../../../state';
-import { Loading } from '../../utils/Loading';
 import { Redirect } from 'react-router';
+import { ListItem } from './ListItem';
+import { loadPosts } from '../../../state';
+import { Loading } from '../../utils/Loading';
+import { getPostsLoadStatus } from '../../../state/postsState/selectors';
 
 export const PostsList: React.FC = () => {
   const dispatch = useDispatch();
   useEffect(() => { dispatch(loadPosts()) }, [dispatch]);
-  const loadStatus = useSelector(getPostLoadStatus)
+  const loadStatus = useSelector(getPostsLoadStatus)
 
   switch (loadStatus) {
     case 'initial':

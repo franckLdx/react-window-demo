@@ -1,14 +1,10 @@
-import { PostState, initialPostState } from "./state";
+import { Posts, initialPostState } from "./state";
 import { AppActions } from "../actions";
 
-export const posts = (state: PostState = initialPostState, action: AppActions): PostState => {
+export const posts = (state: Posts = initialPostState, action: AppActions): Posts => {
   switch (action.type) {
-    case 'LOADING_POSTS':
-      return { ...state, loadStatus: 'loading' }
     case 'LOADING_POST_SUCCESSFULL':
-      return { ...state, loadStatus: 'loaded', posts: action.posts }
-    case 'LOADING_POSTS_ERROR':
-      return { ...state, loadStatus: 'error' }
+      return action.posts;
     default:
       return state;
   }
