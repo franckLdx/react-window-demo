@@ -19,7 +19,7 @@ export const postsState = (state: PostsState = initialPostState, action: AppActi
 
 function postsLoaded(state: PostsState, action: LoadingPostsSuccess): PostsState {
   const postState = action.posts.map(
-    ({ id }): PostState => ({ postId: id, commentStatus: 'initial' })
+    ({ id }): PostState => ({ id: id, commentStatus: 'initial' })
   );
   return {
     ...state,
@@ -30,8 +30,10 @@ function postsLoaded(state: PostsState, action: LoadingPostsSuccess): PostsState
 
 
 function commentsLoaded(state: PostsState, action: LoadingCommentsSuccessfull): PostsState {
-  const postState = state.postState.filter(post => post.postId !== action.postId);
-  postState.push({ postId: action.postId, commentStatus: 'loaded' })
+  const postState: PostState[] = [
+    { id: action.postId, commentStatus: 'loaded' },
+    ...state.postState.filter(post => post.id !== action.postId)
+  ];
   return {
     ...state,
     postState,

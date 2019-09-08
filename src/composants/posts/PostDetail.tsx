@@ -7,7 +7,7 @@ import { Post } from "../../types";
 import { Header, Card, Divider } from "semantic-ui-react";
 import { CardItem } from "../utils/CardItem";
 import { Loading } from "../utils/Loading";
-import { getPostsLoadStatus } from "../../state/postsState/selectors";
+import { getPostsLoadStatus, getCommentsOfPostLoadStatus } from "../../state/postsState/selectors";
 
 interface PostDetailProps {
   postId: number;
@@ -15,7 +15,7 @@ interface PostDetailProps {
 
 export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(loadPosts()) }, [dispatch]);
+  useEffect(() => { dispatch(loadPosts()); }, [dispatch]);
   const loadStatus = useSelector(getPostsLoadStatus)
   const post = useSelector((state: AppState) => getPost(state, postId));
 
@@ -52,7 +52,30 @@ const PostInfo: React.FC<Post> = ({ id, title, body }) =>
 
 const Comments: React.FC<{ postId: number }> = ({ postId }) => {
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(loadCommentsOfPost(postId)) }, [dispatch, postId]);
+  useEffect(() => { dispatch(loadCommentsOfPost(postId)); }, [dispatch, postId]);
+  const loadStatus = useSelector((state: AppState) =>
+    getCommentsOfPostLoadStatus(state, postId),
+  );
+  console.log((`COMMENT STATE:${loadStatus}`));
+
+  switch (loadStatus) {
+    case 'initial':
+    case 'loading':
+      return <Loading />
+    case 'loaded':
+      return <CommentsInfo postId={postId} />
+    case 'error':
+      return <Redirect to="/error" />
+    default:
+      console.error(`Unexpected loadstatus: ${loadStatus}`);
+      return <Redirect to="/error" />
+  }
+}
+
+interface CommentsInfoProps {
+  postId: number
+}
+const CommentsInfo: React.FC<CommentsInfoProps> = ({ postId }) => {
   const comments = useSelector((state: AppState) => getCommentsOfPost(state, postId));
   const items = useMemo(
     () => comments.map(

@@ -1,7 +1,7 @@
 import { LoadStatus } from "../utils";
 
 export interface PostState {
-  postId: number;
+  id: number;
   commentStatus: LoadStatus;
 }
 
