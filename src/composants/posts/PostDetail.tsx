@@ -8,6 +8,7 @@ import { Header, Card, Divider } from "semantic-ui-react";
 import { CardItem } from "../utils/CardItem";
 import { Loading } from "../utils/Loading";
 import { getPostsLoadStatus, getCommentsOfPostLoadStatus } from "../../state/postsState/selectors";
+import { AddCommentButton } from "./AddComments";
 
 interface PostDetailProps {
   postId: number;
@@ -46,7 +47,7 @@ const PostInfo: React.FC<Post> = ({ id, title, body }) =>
     <Divider />
     <Comments postId={id} />
     <Divider />
-    <HomePageButton />
+    <HomePageButton /> <AddCommentButton />
   </>;
 
 
@@ -56,8 +57,6 @@ const Comments: React.FC<{ postId: number }> = ({ postId }) => {
   const loadStatus = useSelector((state: AppState) =>
     getCommentsOfPostLoadStatus(state, postId),
   );
-  console.log((`COMMENT STATE:${loadStatus}`));
-
   switch (loadStatus) {
     case 'initial':
     case 'loading':

@@ -9,3 +9,16 @@ export const loadCommentsOfPost = async (postId: number) => {
   const response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`)
   return (await response.json()) as any[];
 };
+
+export const addComments = async (postId: number, title: string, comment: string) => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      postId,
+      name: title,
+      email: '',
+      body: comment
+    })
+  });
+  return (await response.json()) as any[];
+};
