@@ -1,24 +1,29 @@
-import { Post } from "../types";
+import { Post, PostComment } from "../types";
+import { Services } from "./context";
 
-export const loadPosts = async () => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts')
-  return (await response.json()) as Post[];
-};
+export const services: Services = {
+  loadPosts: async () => handleErrors<Post[]>(fetch('https://jsonplaceholder.typicode.com/posts')),
 
-export const loadCommentsOfPost = async (postId: number) => {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`)
-  return (await response.json()) as any[];
-};
+  loadCommentsOfPost: async (postId: number) => handleErrors<PostComment[]>(fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`)),
 
-export const addComments = async (postId: number, title: string, comment: string) => {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      postId,
-      name: title,
-      email: '',
-      body: comment
-    })
-  });
-  return (await response.json()) as any[];
-};
+  addComments: async (postId: number, title: string, comment: string, email: string) => {
+    await handleErrors(
+      fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          postId,
+          name: title,
+          body: comment,
+          email
+        })
+      }))
+  }
+}
+
+const handleErrors = async <T,>(fetchResult: Promise<Response>) => {
+  const response = await fetchResult;
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return await response.json() as T;
+}

@@ -4,6 +4,8 @@ import { store } from './state/store';
 import { Main } from './composants';
 import styled from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
+import { apiContext } from './services/context';
+import { services } from './services';
 
 const MyContainer = styled.div`
   width: 100%;
@@ -11,13 +13,18 @@ const MyContainer = styled.div`
   padding: 15px;
 `;
 
-const App: React.FC = () => <>
-  <Provider store={store}>
-    <BrowserRouter>
-      <MyContainer>
-        <Main />
-      </MyContainer>
-    </BrowserRouter>
-  </Provider></>;
+const App: React.FC = () => (
+  <>
+    <Provider store={store}>
+      <apiContext.Provider value={services} >
+        <BrowserRouter>
+          <MyContainer>
+            <Main />
+          </MyContainer>
+        </BrowserRouter>
+      </apiContext.Provider>
+    </Provider>
+  </>
+);
 
 export default App;

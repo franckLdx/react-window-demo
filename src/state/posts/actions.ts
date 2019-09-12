@@ -6,14 +6,14 @@ import { ThunkExtraArgs } from "../thunks";
 import { getPostsLoadStatus } from "../postsState/selectors";
 
 export const loadPosts = () => {
-  return async (dispatch: AppThunkDispatch, getState: () => AppState, { loadPosts }: ThunkExtraArgs) => {
+  return async (dispatch: AppThunkDispatch, getState: () => AppState, { services }: ThunkExtraArgs) => {
     const state = getState();
     if (getPostsLoadStatus(state) === 'loaded') {
       return;
     }
     dispatch(LoadingPosts());
     try {
-      const response = await loadPosts();
+      const response = await services.loadPosts();
       dispatch(loadingPostSuccessfull(response));
     } catch (error) {
       console.error(error);
