@@ -2,14 +2,17 @@ import React, { useCallback, useReducer, useMemo, useContext } from 'react';
 import { Modal, Button, Header, Form, InputOnChangeData, TextAreaProps, Message } from 'semantic-ui-react';
 import { apiContext } from '../../services/context';
 
-export const AddCommentButton: React.FC = () => {
+interface AddCommentButtonProps {
+  postId: number
+}
+export const AddCommentButton: React.FC<AddCommentButtonProps> = ({ postId }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const canEdit = useMemo(
     () => state.savedStatus !== 'saving' && state.savedStatus !== 'successfull',
     [state]
   );
   return (
-    <context.Provider value={{ state, dispatch, canEdit }} >
+    <context.Provider value={{ postId, state, dispatch, canEdit }} >
       <Modal closeIcon trigger={< Button content='Add Comment' labelPosition='left' icon='edit' primary />}>
 
         < Header icon='archive' content='Add a comment for this post' />
@@ -95,7 +98,7 @@ const TheMessage: React.FC = () => {
 };
 
 const TheButtons: React.FC = () => {
-  const { state, dispatch, canEdit } = useContext(context);
+  const { postId, state, dispatch, canEdit } = useContext(context);
   const api = useContext(apiContext);
   const canSave = useMemo(
     () => {
@@ -107,7 +110,7 @@ const TheButtons: React.FC = () => {
   );
   const onSave = useCallback(async () => {
     dispatch({ type: 'SAVE' });
-    api!.addComments(1, state.fields.title, state.fields.comment, state.fields.email)
+    api!.addComments(postId, state.fields.title, state.fields.comment, state.fields.email)
       .then(() => dispatch({ type: 'SAVE_RESULT', success: true }))
       .catch(() => dispatch({ type: 'SAVE_RESULT', success: false }))
   }, [dispatch, api, state.fields]);
@@ -184,8 +187,9 @@ const reducer = (state: State, action: Action): State => {
 
 interface ModalContext {
   state: State;
-  dispatch: React.Dispatch<Action>
-  canEdit: boolean
+  dispatch: React.Dispatch<Action>;
+  canEdit: boolean;
+  postId: number;
 }
 
 const context = React.createContext<ModalContext>({} as ModalContext);

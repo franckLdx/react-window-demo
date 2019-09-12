@@ -47,7 +47,7 @@ const PostInfo: React.FC<Post> = ({ id, title, body }) =>
     <Divider />
     <Comments postId={id} />
     <Divider />
-    <HomePageButton /> <AddCommentButton />
+    <HomePageButton /> <AddCommentButton postId={id} />
   </>;
 
 

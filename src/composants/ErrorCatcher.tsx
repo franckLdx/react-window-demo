@@ -1,4 +1,4 @@
-import React, { ErrorInfo } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router';
 
 interface ErrorCatcherState {
@@ -8,11 +8,8 @@ interface ErrorCatcherState {
 export class ErrorCatcher extends React.Component<{}, ErrorCatcherState> {
   state = { hasError: false };
 
-  constructor(props: any) {
-    super(props);
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error) {
+    console.error(error);
     this.setState({ hasError: true });
   }
 
