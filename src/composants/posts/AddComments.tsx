@@ -5,17 +5,35 @@ import { apiContext } from '../../services/context';
 interface AddCommentButtonProps {
   postId: number
 }
+
 export const AddCommentButton: React.FC<AddCommentButtonProps> = ({ postId }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const canEdit = useMemo(
     () => state.savedStatus !== 'saving' && state.savedStatus !== 'successfull',
     [state]
   );
-  return (
-    <context.Provider value={{ postId, state, dispatch, canEdit }} >
-      <Modal closeIcon trigger={< Button content='Add Comment' labelPosition='left' icon='edit' primary />}>
+  const togleOpen = useCallback(
+    () => { dispatch({ type: 'TOGLE_OPEN_STATUS' }) },
+    [dispatch]
+  );
 
-        < Header icon='archive' content='Add a comment for this post' />
+  return (
+    <context.Provider value={{ postId, state, dispatch, canEdit, onClose: togleOpen }} >
+      <Modal
+        closeIcon
+        open={state.openStatus}
+        onClose={togleOpen}
+        trigger={
+          < Button
+            primary
+            content='Add Comment'
+            labelPosition='left'
+            icon='edit'
+            onClick={togleOpen}
+          />
+        }>
+
+        <Header icon='archive' content='Add a comment for this post' />
 
         <Modal.Content>
           <TheForm />
@@ -98,7 +116,7 @@ const TheMessage: React.FC = () => {
 };
 
 const TheButtons: React.FC = () => {
-  const { postId, state, dispatch, canEdit } = useContext(context);
+  const { postId, state, dispatch, canEdit, onClose } = useContext(context);
   const api = useContext(apiContext);
   const canSave = useMemo(
     () => {
@@ -113,7 +131,7 @@ const TheButtons: React.FC = () => {
     api!.addComments(postId, state.fields.title, state.fields.comment, state.fields.email)
       .then(() => dispatch({ type: 'SAVE_RESULT', success: true }))
       .catch(() => dispatch({ type: 'SAVE_RESULT', success: false }))
-  }, [dispatch, api, state.fields]);
+  }, [dispatch, api, postId, state.fields]);
 
   return (
     <>
@@ -129,6 +147,7 @@ const TheButtons: React.FC = () => {
         icon="remove"
         color='red'
         disabled={state.savedStatus === 'saving'}
+        onClick={onClose}
       />
     </>
   );
@@ -146,6 +165,7 @@ interface State {
     [email]: string;
   },
   savedStatus: 'toSave' | 'saving' | 'successfull' | 'failure';
+  openStatus: boolean;
 }
 
 type Fields = keyof State['fields'];
@@ -157,6 +177,7 @@ const initialState: State = {
     email: '',
   },
   savedStatus: 'toSave',
+  openStatus: false,
 }
 
 type Action = {
@@ -166,6 +187,7 @@ type Action = {
 }
   | { type: 'SAVE' }
   | { type: 'SAVE_RESULT', success: boolean }
+  | { type: 'TOGLE_OPEN_STATUS' };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -180,6 +202,11 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, savedStatus: 'saving' };
     case 'SAVE_RESULT':
       return { ...state, savedStatus: action.success ? 'successfull' : 'failure' };
+    case 'TOGLE_OPEN_STATUS':
+      const openStatus = !state.openStatus;
+      return openStatus ? {
+        ...state, openStatus
+      } : initialState;
     default:
       throw Error(`Unexpected action:${action}`);
   }
@@ -190,6 +217,7 @@ interface ModalContext {
   dispatch: React.Dispatch<Action>;
   canEdit: boolean;
   postId: number;
+  onClose: () => void;
 }
 
 const context = React.createContext<ModalContext>({} as ModalContext);
