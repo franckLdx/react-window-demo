@@ -137,7 +137,7 @@ const TheButtons: React.FC = () => {
         reduxDispatch(loadCommentsOfPost(postId, true));
       })
       .catch(() => dispatch({ type: 'SAVE_RESULT', success: false }))
-  }, [dispatch, api, postId, state.fields]);
+  }, [dispatch, reduxDispatch, api, postId, state.fields]);
 
   return (
     <>
