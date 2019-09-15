@@ -2,9 +2,13 @@ import { Post, PostComment } from "../types";
 import { Services } from "./context";
 
 export const services: Services = {
-  loadPosts: async () => handleErrors<Post[]>(fetch('https://jsonplaceholder.typicode.com/posts')),
+  loadPosts: async () => handleErrors<Post[]>(
+    fetch('https://jsonplaceholder.typicode.com/posts')
+  ),
 
-  loadCommentsOfPost: async (postId: number) => handleErrors<PostComment[]>(fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`)),
+  loadCommentsOfPost: async (postId: number) => handleErrors<PostComment[]>(
+    fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`)
+  ),
 
   addComments: async (postId: number, title: string, comment: string, email: string) => {
     await handleErrors(

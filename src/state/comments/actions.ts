@@ -11,8 +11,13 @@ export const loadCommentsOfPost = (postId: number, force = false) => {
     if (getCommentsOfPostLoadStatus(getState(), postId) === 'loaded' && !force) {
       return;
     }
-    const response = await services.loadCommentsOfPost(postId);
-    dispatch(loadingCommentsSuccessfull(postId, response));
+    dispatch(loadingComments(postId));
+    services.loadCommentsOfPost(postId)
+      .then(
+        response => dispatch(loadingCommentsSuccessfull(postId, response))
+      ).catch(
+        () => dispatch(loadingCommentsError(postId))
+      );
   }
 }
 
@@ -27,4 +32,23 @@ export const loadingCommentsSuccessfull: ActionCreator<LoadingCommentsSuccessful
   comments,
 });
 
-export type CommentsActions = LoadingCommentsSuccessfull;
+export interface LoadingCommentsError {
+  type: 'LOADING_COMMENTS_ERROR',
+  postId: number,
+}
+export const loadingCommentsError: ActionCreator<LoadingCommentsError> = (postId: number) => ({
+  type: 'LOADING_COMMENTS_ERROR',
+  postId,
+});
+
+export interface LoadingComments {
+  type: 'LOADING_COMMENTS',
+  postId: number,
+}
+export const loadingComments: ActionCreator<LoadingComments> = (postId: number) => ({
+  type: 'LOADING_COMMENTS',
+  postId,
+});
+
+
+export type CommentsActions = LoadingComments | LoadingCommentsSuccessfull | LoadingCommentsError;
