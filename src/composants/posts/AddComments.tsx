@@ -1,6 +1,8 @@
 import React, { useCallback, useReducer, useMemo, useContext } from 'react';
 import { Modal, Button, Header, Form, InputOnChangeData, TextAreaProps, Message } from 'semantic-ui-react';
 import { apiContext } from '../../services/context';
+import { useDispatch } from 'react-redux';
+import { loadCommentsOfPost } from '../../state';
 
 interface AddCommentButtonProps {
   postId: number
@@ -118,6 +120,7 @@ const TheMessage: React.FC = () => {
 const TheButtons: React.FC = () => {
   const { postId, state, dispatch, canEdit, onClose } = useContext(context);
   const api = useContext(apiContext);
+  const reduxDispatch = useDispatch();
   const canSave = useMemo(
     () => {
       return Object.values(state.fields).reduce(
@@ -129,7 +132,10 @@ const TheButtons: React.FC = () => {
   const onSave = useCallback(async () => {
     dispatch({ type: 'SAVE' });
     api!.addComments(postId, state.fields.title, state.fields.comment, state.fields.email)
-      .then(() => dispatch({ type: 'SAVE_RESULT', success: true }))
+      .then(() => {
+        dispatch({ type: 'SAVE_RESULT', success: true });
+        reduxDispatch(loadCommentsOfPost(postId, true));
+      })
       .catch(() => dispatch({ type: 'SAVE_RESULT', success: false }))
   }, [dispatch, api, postId, state.fields]);
 
