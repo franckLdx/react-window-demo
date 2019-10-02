@@ -2,7 +2,7 @@ import React from "react";
 import { Message } from "semantic-ui-react";
 import { HomePageButton } from "../utils/HomePageButton";
 
-export const ErrorPage: React.FC = () => (
+const ErrorPage: React.FC = () => (
   <>
     <Message negative>
       <Message.Header>Oups, sorry</Message.Header>
@@ -12,3 +12,5 @@ export const ErrorPage: React.FC = () => (
     <HomePageButton />
   </>
 );
+
+export default ErrorPage;

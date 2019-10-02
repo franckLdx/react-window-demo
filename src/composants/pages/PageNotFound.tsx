@@ -14,4 +14,4 @@ const RawPageNotFound: React.FC<RouteComponentProps<any>> = ({ location }) => (
   </>
 );
 
-export const PageNotFound = withRouter(RawPageNotFound);
+export default withRouter(RawPageNotFound);
