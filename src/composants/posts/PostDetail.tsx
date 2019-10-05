@@ -2,12 +2,12 @@ import React, { useEffect, useMemo } from "react";
 import { Redirect } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { HomePageButton } from "../utils/HomePageButton";
-import { getPost, AppState, getCommentsOfPost, loadPosts, loadCommentsOfPost } from "../../state";
+import { loadPosts, loadCommentsOfPost, makeGetPost, makeGetCommentsOfPost } from "../../state";
 import { Post } from "../../types";
 import { Header, Card, Divider } from "semantic-ui-react";
 import { CardItem } from "../utils/CardItem";
 import { Loading } from "../utils/Loading";
-import { getPostsLoadStatus, getCommentsOfPostLoadStatus } from "../../state/postsState/selectors";
+import { getPostsLoadStatus, makeGetCommentsOfPostLoadStatus } from "../../state/postsState/selectors";
 import { AddCommentButton } from "./AddComments";
 
 interface PostDetailProps {
@@ -18,7 +18,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   const dispatch = useDispatch();
   useEffect(() => { dispatch(loadPosts()); }, [dispatch]);
   const loadStatus = useSelector(getPostsLoadStatus)
-  const post = useSelector((state: AppState) => getPost(state, postId));
+  const getPost = useMemo(() => makeGetPost(postId), [postId])
+  const post = useSelector(getPost);
 
   switch (loadStatus) {
     case 'initial':
@@ -54,9 +55,8 @@ const PostInfo: React.FC<Post> = ({ id, title, body }) =>
 const Comments: React.FC<{ postId: number }> = ({ postId }) => {
   const dispatch = useDispatch();
   useEffect(() => { dispatch(loadCommentsOfPost(postId)); }, [dispatch, postId]);
-  const loadStatus = useSelector((state: AppState) =>
-    getCommentsOfPostLoadStatus(state, postId),
-  );
+  const getCommentsOfPostLoadStatus = makeGetCommentsOfPostLoadStatus(postId);
+  const loadStatus = useSelector(getCommentsOfPostLoadStatus);
   switch (loadStatus) {
     case 'initial':
     case 'loading':
@@ -75,7 +75,8 @@ interface CommentsInfoProps {
   postId: number
 }
 const CommentsInfo: React.FC<CommentsInfoProps> = ({ postId }) => {
-  const comments = useSelector((state: AppState) => getCommentsOfPost(state, postId));
+  const getCommentsOfPost = useMemo(() => makeGetCommentsOfPost(postId), [postId]);
+  const comments = useSelector(getCommentsOfPost);
   const items = useMemo(
     () => comments.map(
       comment => <CardItem key={comment.id} header={comment.name} description={comment.body} />

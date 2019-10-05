@@ -3,12 +3,13 @@ import { PostComment } from "../../types";
 import { AppState } from "../state";
 import { AppThunkDispatch, loadPosts } from "../actions";
 import { ThunkExtraArgs } from "../thunks";
-import { getCommentsOfPostLoadStatus } from "../postsState/selectors";
+import { makeGetCommentsOfPostLoadStatus } from "../postsState/selectors";
 
 export const loadCommentsOfPost = (postId: number, force = false) => {
+  const getCommentsOfPostLoadStatus = makeGetCommentsOfPostLoadStatus(postId)
   return async (dispatch: AppThunkDispatch, getState: () => AppState, { services }: ThunkExtraArgs) => {
     dispatch(loadPosts());
-    if (getCommentsOfPostLoadStatus(getState(), postId) === 'loaded' && !force) {
+    if (getCommentsOfPostLoadStatus(getState()) === 'loaded' && !force) {
       return;
     }
     dispatch(loadingComments(postId));
