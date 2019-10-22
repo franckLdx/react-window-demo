@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { PostsList, PostDetail } from "./posts";
 import { ErrorCatcher } from "./ErrorCatcher";
 import { Loading } from "./utils/Loading";
+import { PostsList, PostDetail } from "./posts";
 const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
 const PageNotFound = React.lazy(() => import("./pages/PageNotFound"));
 
@@ -22,6 +22,6 @@ export const Main: React.FC = () => (
           <Route component={PageNotFound} />
         </Switch>
       </Router >
-    </Suspense>
-  </ErrorCatcher>
+    </Suspense >
+  </ErrorCatcher >
 );

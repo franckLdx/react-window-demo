@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router';
 import { ListItem } from './ListItem';
-import { loadPosts } from '../../../state';
 import { Loading } from '../../utils/Loading';
-import { getPostsLoadStatus } from '../../../state/postsState/selectors';
+import { observer } from 'mobx-react-lite';
+import { autorun } from 'mobx';
+import { usePostsStore } from '../../../stores';
 
-export const PostsList: React.FC = () => {
-  const dispatch = useDispatch();
-  useEffect(() => { dispatch(loadPosts()) }, [dispatch]);
-  const loadStatus = useSelector(getPostsLoadStatus)
+export const PostsList: React.FC = observer(() => {
+  const postsStore = usePostsStore();
 
-  switch (loadStatus) {
+  // eslint-disable-next-line
+  useEffect(autorun(() => { postsStore.loadPosts() }), []);
+
+  switch (postsStore.loadStatus) {
     case 'initial':
     case 'loading':
       return <Loading />
@@ -20,7 +21,7 @@ export const PostsList: React.FC = () => {
     case 'error':
       return <Redirect to="/error" />
     default:
-      console.error(`Unexpected loadstatus: ${loadStatus}`);
+      console.error(`Unexpected loadstatus: ${postsStore.loadStatus}`);
       return <Redirect to="/error" />
   }
-}
+});

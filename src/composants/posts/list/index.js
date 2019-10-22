@@ -1,1 +1,1 @@
-export * from './PostsList'
+export { PostsList } from './PostsList'

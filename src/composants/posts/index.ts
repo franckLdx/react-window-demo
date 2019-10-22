@@ -1,2 +1,2 @@
 export * from './list'
-export * from './PostDetail'
+export * from './detail'
