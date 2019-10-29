@@ -3,6 +3,7 @@ import { Main } from './composants';
 import styled from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { StoresProvider } from './stores';
+import { ApiProvider } from './services';
 
 const MyContainer = styled.div`
   width: 100%;
@@ -12,13 +13,15 @@ const MyContainer = styled.div`
 
 const App: React.FC = () => (
   <>
-    <StoresProvider>
-      <BrowserRouter>
-        <MyContainer>
-          <Main />
-        </MyContainer>
-      </BrowserRouter>
-    </StoresProvider>
+    <ApiProvider>
+      <StoresProvider>
+        <BrowserRouter>
+          <MyContainer>
+            <Main />
+          </MyContainer>
+        </BrowserRouter>
+      </StoresProvider>
+    </ApiProvider>
   </>
 );
 

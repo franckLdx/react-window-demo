@@ -1,5 +1,6 @@
+import * as React from 'react';
 import { Post, PostComment } from "../types";
-import { Services } from "./context";
+import { Services, ApiContext } from "./context";
 
 export const services: Services = {
   loadPosts: async () => handleErrors<Post[]>(
@@ -31,3 +32,7 @@ const handleErrors = async <T,>(fetchResult: Promise<Response>) => {
   }
   return await response.json() as T;
 }
+
+export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <ApiContext.Provider value={services}>{children}</ApiContext.Provider>;
+} 

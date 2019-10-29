@@ -7,4 +7,4 @@ export interface Services {
   addComments: (postId: number, title: string, comment: string, email: string) => Promise<void>
 };
 
-export const apiContext = createContext<Services | undefined>(undefined);
+export const ApiContext = createContext<Services | undefined>(undefined);

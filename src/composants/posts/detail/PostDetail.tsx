@@ -7,7 +7,7 @@ import { usePostsStore } from "../../../stores";
 import { Loading } from "../../utils/Loading";
 import { HomePageButton } from "../../utils/HomePageButton";
 import { Post } from "../../../types";
-import { AddCommentButton } from "../AddComments";
+import { AddCommentButton } from "../AddComments/AddComments";
 import { Comments } from "./Comments";
 
 interface PostDetailProps {
