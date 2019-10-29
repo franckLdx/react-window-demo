@@ -27,15 +27,13 @@ const initialState: InitialState = {
   openStatus: false,
 }
 
-export const createStore = (postId: number, api: Services) => {
+export const createStore = ({ postId, api }: { postId: number, api: Services }) => {
   return {
     ...initialState,
     canEdit() {
-      console.log('=====> EDIT', canEditStatus.includes(this.saveStatus));
       return canEditStatus.includes(this.saveStatus)
     },
     canSave() {
-      console.log('=====> SAVE');
       const fielded = Object.values(this.fields).reduce(
         (acc, value) => isEmpty(value) ? false : acc,
         true);

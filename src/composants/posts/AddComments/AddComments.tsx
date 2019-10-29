@@ -10,7 +10,7 @@ interface AddCommentButtonProps {
 
 export const AddCommentButton: React.FC<AddCommentButtonProps> = ({ postId }) => {
   const api = useContext(ApiContext)!;
-  const localStore = useLocalStore(() => createStore(postId, api));
+  const localStore = useLocalStore(createStore, { postId, api });
 
   return useObserver(() =>
     <StoreContext.Provider value={localStore}>
