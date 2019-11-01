@@ -1,17 +1,22 @@
 import React, { useEffect } from "react";
 import { Card, Header } from 'semantic-ui-react';
-import { useComputed, useObserver } from "mobx-react-lite";
+import { useComputed, useObserver, useAsObservableSource } from "mobx-react-lite";
 import { Redirect } from "react-router";
 import { useCommentsStore } from "../../../stores";
 import { Loading } from "../../utils/Loading";
 import { PostComment } from "../../../types";
 import { CardItem } from "../../utils/CardItem";
+import { reaction } from "mobx";
 
 export const Comments: React.FC<{ postId: number }> = ({ postId }) => {
   const commentsStore = useCommentsStore();
+  const source = useAsObservableSource({ postId });
 
   // eslint-disable-next-line
-  useEffect(() => { commentsStore.loadComments(postId) }, [postId]);
+  useEffect(
+    reaction(() => source.postId, commentsStore.loadComments, { fireImmediately: true }),
+    []
+  );
 
   return useObserver(() => {
     const commentsState = commentsStore.getCommentsState(postId);
@@ -27,7 +32,7 @@ export const Comments: React.FC<{ postId: number }> = ({ postId }) => {
         console.error(`Unexpected loadstatus: ${commentsState.loadStatus}`);
         return <Redirect to="/error" />
     }
-  })
+  });
 };
 
 interface CommentsInfoProps {
@@ -35,7 +40,7 @@ interface CommentsInfoProps {
 }
 const CommentsInfo: React.FC<CommentsInfoProps> = ({ postId }) => {
   const commentsStore = useCommentsStore();
-  const { comments } = commentsStore.getCommentsState(postId);
+  const comments = commentsStore.getCommentsState(postId).comments;
 
   const items = useComputed(
     () => comments.map(getItem),
