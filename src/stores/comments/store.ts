@@ -14,15 +14,13 @@ export function createStore() {
       if (!canLoad(commentsState.loadStatus)) {
         return;
       }
-      commentsState.loadStatus = 'loading';
-      this.byPost.set(postId, commentsState);
-      commentsState.comments = await services.loadCommentsOfPost(postId);
-      commentsState.loadStatus = 'loaded';
-      runInAction(() => this.byPost.set(postId, commentsState));
+      this.byPost.set(postId, { ...commentsState, loadStatus: 'loading' });
+      const comments = await services.loadCommentsOfPost(postId);
+      runInAction(() => this.byPost.set(postId, { ...commentsState, comments, loadStatus: 'loaded' }));
     },
 
     getCommentsState(postId: number) {
-      return this.byPost.get(postId) || initialComments;
+      return this.byPost.get(postId) || Object.assign({}, initialComments);
     }
   }
 }
@@ -35,7 +33,7 @@ interface InitialStore {
   byPost: Map<number, CommentsState>
 }
 
-const initialComments: CommentsState = {
+const initialComments: Readonly<CommentsState> = {
   loadStatus: 'initial',
   comments: [],
 }

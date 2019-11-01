@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router";
 import { autorun } from "mobx";
-import { observer } from "mobx-react-lite";
+import { useObserver } from "mobx-react-lite";
 import { Divider, Header } from "semantic-ui-react";
 import { usePostsStore } from "../../../stores";
 import { Loading } from "../../utils/Loading";
@@ -14,26 +14,28 @@ interface PostDetailProps {
   postId: number;
 }
 
-export const PostDetail: React.FC<PostDetailProps> = observer(({ postId }) => {
+export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   const postsStore = usePostsStore();
 
   // eslint-disable-next-line
   useEffect(autorun(() => { postsStore.loadPosts(); }), []);
 
-  switch (postsStore.loadStatus) {
-    case 'initial':
-    case 'loading':
-      return <Loading />
-    case 'loaded':
-      const post = postsStore.getPost(postId);
-      return post ? <PostInfo {...post} /> : <NotFound />
-    case 'error':
-      return <Redirect to="/error" />
-    default:
-      console.error(`Unexpected loadstatus: ${postsStore.loadStatus}`);
-      return <Redirect to="/error" />
-  }
-});
+  return useObserver(() => {
+    switch (postsStore.loadStatus) {
+      case 'initial':
+      case 'loading':
+        return <Loading />
+      case 'loaded':
+        const post = postsStore.getPost(postId);
+        return post ? <PostInfo {...post} /> : <NotFound />
+      case 'error':
+        return <Redirect to="/error" />
+      default:
+        console.error(`Unexpected loadstatus: ${postsStore.loadStatus}`);
+        return <Redirect to="/error" />
+    }
+  });
+};
 
 const NotFound: React.FC = () => <>
   Oups, could not found this
