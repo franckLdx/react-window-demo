@@ -3,6 +3,9 @@ import { Modal, Button, Header, Form, InputOnChangeData, TextAreaProps, Message 
 import { useLocalStore, useObserver, observer, useComputed } from 'mobx-react-lite';
 import { ApiContext } from '../../../services/context';
 import { createStore, StoreContext } from './store';
+import { configure } from 'mobx';
+
+configure({ enforceActions: "observed" })
 
 interface AddCommentButtonProps {
   postId: number
@@ -52,35 +55,39 @@ const TheForm: React.FC = observer(() => {
     }
     localStore.updateField(data.name, data.value);
   }, [localStore]);
-
-  return (
-    <Form loading={localStore.saveStatus === 'saving'} >
-      <Form.Input
-        name='title'
-        label="Title"
-        placeholder='Title'
-        required
-        disabled={!localStore.canEdit}
-        onChange={onChange}
-      />
-      <Form.TextArea
-        name='comment'
-        label="Comment"
-        placeholder='Tell us more'
-        rows={5}
-        onChange={onChange}
-        required
-        disabled={!localStore.canEdit}
-      />
-      <Form.Input
-        name='email'
-        label="Email"
-        type='email'
-        placeholder='Who are you ?'
-        onChange={onChange}
-        disabled={!localStore.canEdit}
-      />
-    </Form>
+  return useObserver(() =>
+    (
+      <Form loading={localStore.saveStatus === 'saving'} >
+        <Form.Input
+          name='title'
+          label="Title"
+          placeholder='Title'
+          required
+          disabled={!localStore.canEdit}
+          onChange={onChange}
+          value={localStore.fields.title}
+        />
+        <Form.TextArea
+          name='comment'
+          label="Comment"
+          placeholder='Tell us more'
+          rows={5}
+          onChange={onChange}
+          value={localStore.fields.comment}
+          required
+          disabled={!localStore.canEdit}
+        />
+        <Form.Input
+          name='email'
+          label="Email"
+          type='email'
+          placeholder='Who are you ?'
+          onChange={onChange}
+          value={localStore.fields.email}
+          disabled={!localStore.canEdit}
+        />
+      </Form>
+    )
   );
 });
 

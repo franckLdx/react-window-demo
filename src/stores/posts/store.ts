@@ -1,4 +1,3 @@
-
 import { runInAction, configure } from 'mobx';
 import { services } from '../../services';
 import { Post } from '../../types';
@@ -14,7 +13,7 @@ export function createStore() {
       if (!canLoad(this.loadStatus)) {
         return;
       }
-      runInAction("posts loading", () => this.loadStatus = 'loading');
+      this.loadStatus = 'loading';
       const posts = await services.loadPosts()
       runInAction("posts loaded", () => {
         this.loadStatus = 'loaded';
