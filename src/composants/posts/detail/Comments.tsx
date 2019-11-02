@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { Card, Header } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import { useComputed, useObserver, useAsObservableSource } from "mobx-react-lite";
 import { Redirect } from "react-router";
 import { useCommentsStore } from "../../../stores";
 import { Loading } from "../../utils/Loading";
 import { PostComment } from "../../../types";
-import { CardItem } from "../../utils/CardItem";
+import { CardItem, CardsItemGroup } from "../../utils/CardItem";
 import { reaction } from "mobx";
 
 export const Comments: React.FC<{ postId: number }> = ({ postId }) => {
@@ -41,16 +41,15 @@ interface CommentsInfoProps {
 const CommentsInfo: React.FC<CommentsInfoProps> = ({ postId }) => {
   const commentsStore = useCommentsStore();
   const comments = commentsStore.getCommentsState(postId).comments;
-
   const items = useComputed(
     () => comments.map(getItem),
     [comments]
   );
   return (<>
     <Header style={{ marginTop: '10px' }} as='h3' > Comments </Header>
-    <Card.Group>
+    <CardsItemGroup>
       {items}
-    </Card.Group>
+    </CardsItemGroup>
   </>
   );
 }

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Card } from 'semantic-ui-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { observer, useComputed } from 'mobx-react-lite';
-import { CardItem } from '../../utils/CardItem';
+import { CardItem, CardsItemGroup } from '../../utils/CardItem';
 import { Post } from '../../../types';
 import { usePostsStore } from '../../../stores';
 
@@ -14,9 +13,9 @@ const RawListItem: React.FC<RouteComponentProps<any>> = observer((routeProps) =>
   );
   /*eslint-enable*/
   return (
-    <Card.Group id="Posts">
+    <CardsItemGroup>
       {items}
-    </Card.Group>
+    </CardsItemGroup>
   );
 })
 
@@ -27,6 +26,5 @@ const getItem = (post: Post) =>
     description={post.body}
     url={`${post.id}`}
   />
-
 
 export const ListItem = withRouter(RawListItem);
