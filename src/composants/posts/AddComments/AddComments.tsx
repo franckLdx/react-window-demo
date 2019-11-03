@@ -3,9 +3,6 @@ import { Modal, Button, Header, Form, InputOnChangeData, TextAreaProps, Message 
 import { useLocalStore, useObserver, observer, useComputed } from 'mobx-react-lite';
 import { ApiContext } from '../../../services/context';
 import { createStore, StoreContext } from './store';
-import { configure } from 'mobx';
-
-configure({ enforceActions: "observed" })
 
 interface AddCommentButtonProps {
   postId: number

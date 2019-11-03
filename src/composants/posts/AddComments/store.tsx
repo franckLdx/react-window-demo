@@ -1,6 +1,8 @@
 import { createContext } from "react";
-import { runInAction } from "mobx";
+import { runInAction, configure } from "mobx";
 import { Services } from "../../../services/context";
+
+configure({ enforceActions: "observed" })
 
 type SaveStatus = 'toSave' | 'saving' | 'successfull' | 'failure';
 
