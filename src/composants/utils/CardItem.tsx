@@ -11,7 +11,7 @@ interface CardItemProps {
 const RawCardItem: React.FC<CardItemProps & RouteComponentProps<any>> = ({ header, description, url, history }) => {
   const onClick = useCallback(() => history.push(url || ''), [url, history]);
   return (
-    <Card color='orange' link={url !== undefined} onClick={url ? onClick : undefined}>
+    <Card style={{ animation: `fadeIn ${300 + Math.floor(Math.random() * 800)}ms linear` }} color='orange' link={url !== undefined} onClick={url ? onClick : undefined}>
       <Card.Content>
         <Card.Header>{header}</Card.Header>
         <Card.Description>{description}</Card.Description>

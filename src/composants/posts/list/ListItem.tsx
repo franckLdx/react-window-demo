@@ -9,7 +9,7 @@ const RawListItem: React.FC<RouteComponentProps<any>> = observer((routeProps) =>
   const postsStore = usePostsStore();
   /*eslint-disable*/
   const items = useComputed(
-    () => postsStore.posts.map(post => getItem(post))
+    () => postsStore.posts.map(getItem)
   );
   /*eslint-enable*/
   return (
