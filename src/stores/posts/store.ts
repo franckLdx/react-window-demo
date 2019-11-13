@@ -5,9 +5,10 @@ import { LoadStatus, canLoad } from '../utils';
 
 configure({ enforceActions: "observed" })
 
-export function createStore() {
+export function createPostsStore() {
   return {
-    ...initialStore,
+    loadStatus: 'initial' as LoadStatus,
+    posts: [] as Post[],
 
     async loadPosts() {
       if (!canLoad(this.loadStatus)) {
@@ -27,14 +28,4 @@ export function createStore() {
   }
 };
 
-const initialStore: InitialStore = {
-  loadStatus: 'initial',
-  posts: [],
-}
-
-interface InitialStore {
-  loadStatus: LoadStatus;
-  posts: Post[];
-}
-
-export type Store = ReturnType<typeof createStore>
+export type Store = ReturnType<typeof createPostsStore>

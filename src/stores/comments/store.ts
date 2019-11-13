@@ -7,7 +7,7 @@ configure({ enforceActions: "observed" })
 
 export function createStore() {
   return {
-    ...initialStore,
+    byPost: new Map<number, CommentsState>(),
 
     async loadComments(postId: number) {
       const commentsState = this.getCommentsState(postId);
@@ -16,21 +16,13 @@ export function createStore() {
       }
       this.byPost.set(postId, { ...commentsState, loadStatus: 'loading' });
       const comments = await services.loadCommentsOfPost(postId);
-      runInAction(() => this.byPost.set(postId, { ...commentsState, comments, loadStatus: 'loaded' }));
+      runInAction("comments loaded", () => this.byPost.set(postId, { ...commentsState, comments, loadStatus: 'loaded' }));
     },
 
     getCommentsState(postId: number) {
       return this.byPost.get(postId) || Object.assign({}, initialComments);
     }
   }
-}
-
-const initialStore: InitialStore = {
-  byPost: new Map<number, CommentsState>()
-}
-
-interface InitialStore {
-  byPost: Map<number, CommentsState>
 }
 
 const initialComments: Readonly<CommentsState> = {
