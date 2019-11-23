@@ -8,7 +8,7 @@ import { Loading } from "../../utils/Loading";
 import { HomePageButton } from "../../utils/HomePageButton";
 import { Post } from "../../../types";
 import { AddCommentButton } from "../AddComments/AddComments";
-import { Comments } from "./Comments";
+import { CommentsList } from "./Comments";
 
 interface PostDetailProps {
   postId: number;
@@ -48,7 +48,7 @@ const PostInfo: React.FC<Post> = ({ id, title, body }) =>
     <Header as='h3'>{title}</Header>
     {body}
     <Divider />
-    <Comments postId={id} />
+    <CommentsList postId={id} />
     <Divider />
     <HomePageButton />
     <AddCommentButton postId={id} />

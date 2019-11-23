@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { Modal, Button, Header, Form, InputOnChangeData, TextAreaProps, Message } from 'semantic-ui-react';
-import { useLocalStore, useObserver, observer, useComputed } from 'mobx-react-lite';
+import { useLocalStore, useObserver, observer, useAsObservableSource, Observer } from 'mobx-react-lite';
 import { ApiContext } from '../../../services/context';
 import { createStore, StoreContext } from './store';
 
@@ -10,9 +10,9 @@ interface AddCommentButtonProps {
 
 export const AddCommentButton: React.FC<AddCommentButtonProps> = ({ postId }) => {
   const api = useContext(ApiContext)!;
-  const localStore = useLocalStore(createStore, { postId, api });
-
-  return useObserver(() =>
+  const source = useAsObservableSource({ postId, api });
+  const localStore = useLocalStore(createStore, source);
+  return <Observer>{() => (
     <StoreContext.Provider value={localStore}>
       <Modal
         closeIcon
@@ -41,7 +41,8 @@ export const AddCommentButton: React.FC<AddCommentButtonProps> = ({ postId }) =>
 
       </Modal >
     </StoreContext.Provider >
-  );
+  )}
+  </Observer>
 };
 
 const TheForm: React.FC = observer(() => {
@@ -90,18 +91,6 @@ const TheForm: React.FC = observer(() => {
 
 const TheMessage: React.FC = observer(() => {
   const localStore = useContext(StoreContext)!;
-  const message = useComputed(() => {
-    switch (localStore.saveStatus) {
-      case 'toSave':
-        return 'Please fill the form and Press Save to add comment';
-      case 'saving':
-        return 'Saving...';
-      case 'successfull':
-        return 'Saved !';
-      case 'failure':
-        return 'Oups, your comment has not been saved';
-    }
-  });
 
   return (
     <Message
@@ -109,7 +98,7 @@ const TheMessage: React.FC = observer(() => {
       success={localStore.saveStatus === "successfull"}
       error={localStore.saveStatus === "failure"}
     >
-      {message}
+      {localStore.getMessage()}
     </Message>
   );
 });

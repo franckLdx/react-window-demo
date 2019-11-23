@@ -15,11 +15,17 @@ export function createPostsStore() {
         return;
       }
       this.loadStatus = 'loading';
-      const posts = await services.loadPosts()
-      runInAction("posts loaded", () => {
-        this.loadStatus = 'loaded';
-        this.posts = posts;
-      })
+      try {
+        const posts = await services.loadPosts()
+        runInAction("posts loaded", () => {
+          this.loadStatus = 'loaded';
+          this.posts = posts;
+        })
+      } catch (err) {
+        runInAction("failed to loaded posts", () => {
+          this.loadStatus = 'error';
+        })
+      }
     },
 
     getPost(postId: number) {

@@ -65,7 +65,19 @@ export const createStore = ({ postId, api }: { postId: number, api: Services }) 
       catch (err) {
         runInAction(() => this.saveStatus = 'failure');
       }
-    }
+    },
+    getMessage() {
+      switch (this.saveStatus) {
+        case 'toSave':
+          return 'Please fill the form and Press Save to add comment';
+        case 'saving':
+          return 'Saving...';
+        case 'successfull':
+          return 'Saved !';
+        case 'failure':
+          return 'Oups, your comment has not been saved';
+      }
+    },
   }
 }
 

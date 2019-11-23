@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Header } from 'semantic-ui-react';
-import { useComputed, useObserver, useAsObservableSource } from "mobx-react-lite";
+import { useComputed, useAsObservableSource, Observer } from "mobx-react-lite";
 import { Redirect } from "react-router";
 import { useCommentsStore } from "../../../stores";
 import { Loading } from "../../utils/Loading";
@@ -8,7 +8,7 @@ import { PostComment } from "../../../types";
 import { CardItem, CardsItemGroup } from "../../utils/CardItem";
 import { reaction } from "mobx";
 
-export const Comments: React.FC<{ postId: number }> = ({ postId }) => {
+export const CommentsList: React.FC<{ postId: number }> = ({ postId }) => {
   const commentsStore = useCommentsStore();
   const source = useAsObservableSource({ postId });
 
@@ -18,7 +18,7 @@ export const Comments: React.FC<{ postId: number }> = ({ postId }) => {
     []
   );
 
-  return useObserver(() => {
+  return <Observer>{() => {
     const commentsState = commentsStore.getCommentsState(postId);
     switch (commentsState.loadStatus) {
       case 'initial':
@@ -32,7 +32,7 @@ export const Comments: React.FC<{ postId: number }> = ({ postId }) => {
         console.error(`Unexpected loadstatus: ${commentsState.loadStatus}`);
         return <Redirect to="/error" />
     }
-  });
+  }}</Observer>
 };
 
 interface CommentsInfoProps {

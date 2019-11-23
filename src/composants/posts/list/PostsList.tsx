@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { ListItem } from './ListItem';
 import { Loading } from '../../utils/Loading';
-import { useObserver } from 'mobx-react-lite';
+import { Observer } from 'mobx-react-lite';
 import { autorun } from 'mobx';
 import { usePostsStore } from '../../../stores';
 
@@ -11,7 +11,7 @@ export const PostsList: React.FC = () => {
   // eslint-disable-next-line
   useEffect(autorun(() => { postsStore.loadPosts() }), []);
 
-  return useObserver(() => {
+  return <Observer>{() => {
     switch (postsStore.loadStatus) {
       case 'initial':
       case 'loading':
@@ -24,5 +24,5 @@ export const PostsList: React.FC = () => {
         console.error(`Unexpected loadstatus: ${postsStore.loadStatus}`);
         return <Redirect to="/error" />
     }
-  });
+  }}</Observer>
 };

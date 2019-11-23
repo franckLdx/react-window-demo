@@ -15,8 +15,12 @@ export function createStore() {
         return;
       }
       this.byPost.set(postId, { ...commentsState, loadStatus: 'loading' });
-      const comments = await services.loadCommentsOfPost(postId);
-      runInAction("comments loaded", () => this.byPost.set(postId, { ...commentsState, comments, loadStatus: 'loaded' }));
+      try {
+        const comments = await services.loadCommentsOfPost(postId);
+        runInAction("comments loaded", () => this.byPost.set(postId, { ...commentsState, comments, loadStatus: 'loaded' }));
+      } catch (err) {
+        runInAction("loading comments failed", () => this.byPost.set(postId, { ...commentsState, loadStatus: 'error' }));
+      }
     },
 
     getCommentsState(postId: number) {
