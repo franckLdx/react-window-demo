@@ -3,7 +3,7 @@ import { ListGroup } from 'reactstrap';
 import AutoSizer from "react-virtualized-auto-sizer";
 import styled from 'styled-components';
 import { RenderList } from './RenderList';
-import { ListLoader } from './ListLoaderProps';
+import { ListLoader } from './ListLoader';
 
 const MyContainer = styled.div`
   width: 100%;

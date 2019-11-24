@@ -15,7 +15,6 @@ export const RenderList: React.FC<RenderListProps> = ({ onItemsRendered, ref, he
   const { characters } = useSelector((state: AppState) => state.characters);
 
   const rowRender = useCallback(({ index, style }: ListChildComponentProps) => {
-    console.log(`Render ${index}/${characters.length}`);
     const { name, birthYear } = characters[index];
     return (
       <ListGroupItem style={style}>
