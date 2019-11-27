@@ -29,7 +29,7 @@ export const RenderList: React.FC<RenderListProps> = ({ onItemsRendered, ref, he
       onItemsRendered={onItemsRendered}
       ref={ref}
       itemCount={characters.length}
-      itemSize={150}
+      itemSize={70}
       height={height}
       width={width}
     >
